@@ -31,6 +31,12 @@ public class Main extends javax.swing.JFrame {
         new Main().initComponents();
     }
 
+    private String encry;
+
+    public void setEncry(String encry) {
+        this.encry = encry;
+    }
+
     private void initComponents() {
         this.setTitle("文件摘要计算工具（开发者：zyx，版本：" + getVersion() + "）");
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -57,6 +63,12 @@ public class Main extends javax.swing.JFrame {
         // 背景色
         // jLabel.setOpaque(true);
         // jLabel.setBackground(Color.BLACK);
+        jLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (encry != null && encry.length() > 0)
+                    ClipboardUtils.setClipboardString(encry, "已复制。", "提示器", true);
+            }
+        });
 
         this.add(jLabel);
         // 禁止调整窗口大小
@@ -98,7 +110,6 @@ public class Main extends javax.swing.JFrame {
                         String way = (String) jComboBox.getSelectedItem();
                         way = way == null ? "" : way;
                         for (String path : array) {
-                            String encry;
                             File file = new File(path);
                             switch (way) {
                                 case "md5":
@@ -118,6 +129,7 @@ public class Main extends javax.swing.JFrame {
                                     "<span style='font-size:18;'>" + file.getName() + "</span>"
                                             + "<br/><br/>"
                                             + "<span style='font-size:18;'>" + encry + "</span>"));
+                            ClipboardUtils.setClipboardString(encry, "已复制。", "提示器", false);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
